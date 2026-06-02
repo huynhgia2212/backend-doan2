@@ -1,0 +1,23 @@
+name: Tự động Build Docker Image
+
+on:
+  push:
+    branches: [ "main" ] # Chạy khi có code mới đẩy lên nhánh main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # Chạy trên máy chủ Linux của GitHub (nhẹ và nhanh hơn Windows)
+
+    steps:
+      - name: Lấy mã nguồn về
+        uses: actions/checkout@v4
+
+      - name: Thiết lập môi trường Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Tiến hành Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false # Tạm thời chỉ build để kiểm tra lỗi, chưa đẩy đi đâu
+          tags: backend-doan2-image:latest
